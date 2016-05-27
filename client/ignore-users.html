@@ -1,0 +1,72 @@
+<!-- Page Header -->
+<div class="ignored-section">
+  <div class="leftcol">
+    <h2 class="inline-block">Ignored Users</h2>
+  </div>
+  <div class="rightcol">
+    <div class="pagination-slide">
+      <div class="prev">
+        <button ng-disabled="IgnoreUsersCtrl.page <= 1" ng-click="IgnoreUsersCtrl.pullPage(-1);">
+          &#10094; Newer
+        </button>
+      </div>
+      <div class="page" ng-bind="IgnoreUsersCtrl.page"></div>
+      <div class="next">
+        <button ng-disabled="!IgnoreUsersCtrl.hasMore" ng-click="IgnoreUsersCtrl.pullPage(1);">
+          Older &#10095;
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- All Users -->
+<div class="ignored-data" ng-repeat="user in IgnoreUsersCtrl.users track by user.id">
+  <div class="ignored-user">
+    <div class="user">
+      <!-- Avatar -->
+      <div class="user-avatar">
+        <a ui-sref="profile({ username: user.username })">
+          <img ng-style="IgnoreUsersCtrl.avatarHighlight(user.highlight_color)" ng-src="{{::user.avatar}}">
+        </a>
+      </div>
+
+      <!-- Username and role -->
+      <div class="user-info">
+        <a class="user-username" data-balloon="{{user.role || 'User'}}" ng-style="IgnoreUsersCtrl.usernameHighlight(user.highlight_color)" ui-sref="profile({ username: user.username })" ng-bind-html="user.username"></a>
+        <div class="user-display-name" ng-bind="user.fields.name"></div>
+      </div>
+
+      <!-- User Actions -->
+      <div class="user-action">
+        <span ng-if="user.ignored" ng-click="IgnoreUsersCtrl.unignore(user)">
+          Stop Ignoring
+        </span>
+        <span ng-if="!user.ignored" ng-click="IgnoreUsersCtrl.ignore(user)">
+          Ignore
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- No Ignored Users Listed -->
+<div class="ignored-data centered-text" ng-if="IgnoreUsersCtrl.users.length < 1">
+  <h5>No Users Being Ignored</h5>
+</div>
+
+<div class="ignored-section">
+  <div class="pagination-slide">
+    <div class="prev">
+      <button ng-disabled="IgnoreUsersCtrl.page <= 1" ng-click="IgnoreUsersCtrl.pullPage(-1);">
+        &#10094; Newer
+      </button>
+    </div>
+    <div class="page" ng-bind="IgnoreUsersCtrl.page"></div>
+    <div class="next">
+      <button ng-disabled="!IgnoreUsersCtrl.hasMore" ng-click="IgnoreUsersCtrl.pullPage(1);">
+        Older &#10095;
+      </button>
+    </div>
+  </div>
+</div>

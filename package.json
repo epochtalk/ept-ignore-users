@@ -1,0 +1,18 @@
+{
+  "name": "ept-ignore-users",
+  "version": "0.0.1",
+  "description": "Epochtalk Ignore Users Mod",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Edward Kim",
+  "license": "ISC",
+  "dependencies": {
+    "bluebird": "^3.3.1",
+    "boom": "^3.1.2",
+    "epochtalk-core-pg": "epochtalk/core-pg",
+    "joi": "^7.2.2",
+    "lodash": "^4.0.1"
+  }
+}
