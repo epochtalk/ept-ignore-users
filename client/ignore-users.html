@@ -26,14 +26,14 @@
     <div class="user">
       <!-- Avatar -->
       <div class="user-avatar">
-        <a ui-sref="profile({ username: user.username })">
+        <a ui-sref="profile.posts({ username: user.username })">
           <img ng-style="IgnoreUsersCtrl.avatarHighlight(user.highlight_color)" ng-src="{{::user.avatar}}">
         </a>
       </div>
 
       <!-- Username and role -->
       <div class="user-info">
-        <a class="user-username" data-balloon="{{user.role || 'User'}}" ng-style="IgnoreUsersCtrl.usernameHighlight(user.highlight_color)" ui-sref="profile({ username: user.username })" ng-bind-html="user.username"></a>
+        <a class="user-username" data-balloon="{{user.role || 'User'}}" ng-style="IgnoreUsersCtrl.usernameHighlight(user.highlight_color)" ui-sref="profile.posts({ username: user.username })" ng-bind-html="user.username"></a>
         <div class="user-display-name" ng-bind="user.fields.name"></div>
       </div>
 
