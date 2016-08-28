@@ -1,6 +1,6 @@
 {
   "name": "ept-ignore-users",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Epochtalk Ignore Users Mod",
   "main": "index.js",
   "scripts": {
