@@ -13,7 +13,11 @@ module.exports = {
     var ignoreUserId = request.params.userId;
 
     var promise = request.db.ignoreUsers.ignore(userId, ignoreUserId)
-    .then(function() { return { userId: ignoreUserId, ignored: true }; });
+    .then(function() { return { userId: ignoreUserId, ignored: true }; })
+    .error(function(err) {
+      if (err.constraint) { return {}; }
+      throw err;
+    });
 
     return reply(promise);
   }

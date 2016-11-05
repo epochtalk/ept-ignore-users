@@ -16,7 +16,10 @@ var route = ['$stateProvider', function($stateProvider) {
         var deferred = $q.defer();
         require.ensure([], function() {
           var ctrl = require('./ignore-users.controller');
-          $ocLazyLoad.load({ name: 'ept.ignore-users.ctrl' });
+          $ocLazyLoad.load([
+            { name: 'ept.ignore-users.ctrl' },
+            { name: 'ept.directives.autocomplete-user-id' }
+          ]);
           deferred.resolve(ctrl);
         });
         return deferred.promise;

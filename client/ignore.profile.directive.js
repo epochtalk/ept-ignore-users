@@ -1,8 +1,6 @@
-var html= '<div class="ignore-directive">';
-//html += '<a ng-if="vm.Session.isAuthenticated()" ng-href="#" ui-sref="ignored-users">';
-html += '<a ng-if="vm.canIgnore()" ng-click="vm.ignore()">Ignore</a>';
-html += '<a ng-if="vm.canUnignore()" ng-click="vm.unignore()">Unignore</a>';
-//html += '</a>';
+var html= '<div ng-if="vm.canIgnore() || vm.canUnignore()" class="profile-row profile-action">';
+html += '<a ng-if="vm.canIgnore()" ng-click="vm.ignore()">Ignore This User</a>';
+html += '<a ng-if="vm.canUnignore()" ng-click="vm.unignore()">Unignore This User</a>';
 html += '</div>';
 
 var directive = ['IgnoreUsers', 'Session', 'Alert', '$state',
@@ -10,7 +8,7 @@ var directive = ['IgnoreUsers', 'Session', 'Alert', '$state',
   return {
     restrict: 'E',
     scope: true,
-    bindToController: { post: '=' },
+    bindToController: { user: '=' },
     template: html,
     controllerAs: 'vm',
     controller: [function() {
@@ -18,7 +16,6 @@ var directive = ['IgnoreUsers', 'Session', 'Alert', '$state',
 
       this.Session = Session;
       this.sessionUser = Session.user;
-      this.user = this.post.user;
 
       this.canIgnore = function() {
         var valid = true;
@@ -39,14 +36,14 @@ var directive = ['IgnoreUsers', 'Session', 'Alert', '$state',
       this.ignore = function() {
         return IgnoreUsers.ignore({userId: ctrl.user.id}).$promise
         .then(function() { Alert.success('Ignoring ' + ctrl.user.username); })
-        .then(function() { $state.go($state.$current, { page: undefined, start: ctrl.post.position, '#': ctrl.post.id }, {reload:true}); })
+        .then(function() { $state.go($state.$current, null, {reload:true}); })
         .catch(function(){ Alert.error('Error trying to ignore user.'); });
       };
 
       this.unignore = function() {
         return IgnoreUsers.unignore({userId: ctrl.user.id}).$promise
         .then(function() { Alert.success('No longer ignoring ' + ctrl.user.username); })
-        .then(function() { $state.go($state.$current, { page: undefined, start: ctrl.post.position, '#': ctrl.post.id }, {reload:true}); })
+        .then(function() { $state.go($state.$current, null, {reload:true}); })
         .catch(function(){ Alert.error('Error trying to stop ignoring user.'); });
       };
     }]
@@ -54,4 +51,4 @@ var directive = ['IgnoreUsers', 'Session', 'Alert', '$state',
 }];
 
 
-angular.module('ept').directive('ignorePosts', directive);
+angular.module('ept').directive('ignoreUserProfile', directive);
