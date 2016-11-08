@@ -36,6 +36,12 @@
     <th>Ignored Since</th>
     <th>Action</th>
   </thead>
+  <tbody ng-if="IgnoreUsersCtrl.users.length < 1">
+    <tr>
+      <td class="centered-text no-data" colspan="5"><h5>No Users Being Ignored</h5></td>
+      <td class="centered-text no-data-mobile" colspan="3"><h5>No Users Being Ignored</h5></td>
+    </tr>
+  </tbody>
   <tbody ng-repeat="user in IgnoreUsersCtrl.users track by user.id">
     <tr>
       <td class="hide-mobile">
@@ -65,11 +71,6 @@
     </tr>
   </tbody>
 </table>
-
-<!-- No Ignored Users Listed -->
-<div class="ignored-data centered-text" ng-if="IgnoreUsersCtrl.users.length < 1">
-  <h5>No Users Being Ignored</h5>
-</div>
 
 <div class="ignored-section">
   <div class="pagination-slide">
