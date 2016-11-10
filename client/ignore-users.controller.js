@@ -1,5 +1,5 @@
-var ctrl = ['$anchorScroll', '$timeout', 'Session',  'IgnoreUsers', 'pageData',
-  function($anchorScroll, $timeout, Session, IgnoreUsers, pageData) {
+var ctrl = ['$anchorScroll', '$timeout', 'Session',  'IgnoreUsers', 'pageData', 'Alert',
+  function($anchorScroll, $timeout, Session, IgnoreUsers, pageData, Alert) {
     // page variables
     var ctrl = this;
     this.loggedIn = Session.isAuthenticated;
@@ -9,6 +9,8 @@ var ctrl = ['$anchorScroll', '$timeout', 'Session',  'IgnoreUsers', 'pageData',
     this.limit = pageData.limit;
     this.users = pageData.ignored;
     this.hasMore = pageData.hasMore;
+
+    this.userToIgnore = {};
 
     // Scroll fix for nested state
     $timeout($anchorScroll);
@@ -22,7 +24,24 @@ var ctrl = ['$anchorScroll', '$timeout', 'Session',  'IgnoreUsers', 'pageData',
 
     this.ignore = function(user) {
       return IgnoreUsers.ignore({userId: user.id}).$promise
-      .then(function() { $timeout(function() { user.ignored = true; }); });
+      .then(function(res) { $timeout(function() { user.ignored = true; }); return res; });
+    };
+
+    this.ignoreUser = function() {
+      ctrl.ignore(ctrl.userToIgnore)
+      .then(function(results) {
+        if (results.ignored) {
+          Alert.success('Successfully ignored user ' + ctrl.userToIgnore.username);
+        }
+        else if (results) {
+          Alert.info('User ' + ctrl.userToIgnore.username + ' is already being ignored');
+        }
+        else {
+          Alert.error('There was an error ignoring user ' + ctrl.userToIgnore.username);
+        }
+        ctrl.pullPage(0);
+        ctrl.userToIgnore = {};
+      });
     };
 
     // page view styleing

@@ -19,41 +19,58 @@
     </div>
   </div>
 </div>
-
-<!-- All Users -->
-<div class="ignored-data" ng-repeat="user in IgnoreUsersCtrl.users track by user.id">
-  <div class="ignored-user">
-    <div class="user">
-      <!-- Avatar -->
-      <div class="user-avatar">
-        <a ui-sref="profile.posts({ username: user.username })">
-          <img ng-style="IgnoreUsersCtrl.avatarHighlight(user.highlight_color)" ng-src="{{::user.avatar}}">
-        </a>
-      </div>
-
-      <!-- Username and role -->
-      <div class="user-info">
-        <a class="user-username" data-balloon="{{user.role || 'User'}}" ng-style="IgnoreUsersCtrl.usernameHighlight(user.highlight_color)" ui-sref="profile.posts({ username: user.username })" ng-bind-html="user.username"></a>
-        <div class="user-display-name" ng-bind="user.fields.name"></div>
-      </div>
-
-      <!-- User Actions -->
-      <div class="user-action">
-        <span ng-if="user.ignored" ng-click="IgnoreUsersCtrl.unignore(user)">
-          Stop Ignoring
-        </span>
-        <span ng-if="!user.ignored" ng-click="IgnoreUsersCtrl.ignore(user)">
-          Ignore
-        </span>
-      </div>
-    </div>
+<div class="ignore-user-input">
+  <div>
+    <autocomplete-user-id user-id="IgnoreUsersCtrl.userToIgnore.id" username="IgnoreUsersCtrl.userToIgnore.username" input-placeholder="Type username of user to ignore"></autocomplete-user-id>
+  </div>
+  <div>
+    <button class="button" ng-disabled="!IgnoreUsersCtrl.userToIgnore.id" ng-click="IgnoreUsersCtrl.ignoreUser()">Ignore User</button>
   </div>
 </div>
-
-<!-- No Ignored Users Listed -->
-<div class="ignored-data centered-text" ng-if="IgnoreUsersCtrl.users.length < 1">
-  <h5>No Users Being Ignored</h5>
-</div>
+<!-- All Users -->
+<table class="striped ignored-users" width="100%">
+  <thead>
+    <th>Username</th>
+    <th class="hide-mobile"></th>
+    <th class="hide-mobile">User Role</th>
+    <th>Ignored Since</th>
+    <th>Action</th>
+  </thead>
+  <tbody ng-if="IgnoreUsersCtrl.users.length < 1">
+    <tr>
+      <td class="centered-text no-data" colspan="5"><h5>No Users Being Ignored</h5></td>
+      <td class="centered-text no-data-mobile" colspan="3"><h5>No Users Being Ignored</h5></td>
+    </tr>
+  </tbody>
+  <tbody ng-repeat="user in IgnoreUsersCtrl.users track by user.id">
+    <tr>
+      <td class="hide-mobile">
+        <div class="user-avatar">
+          <a ui-sref="profile.posts({ username: user.username })">
+            <img ng-style="IgnoreUsersCtrl.avatarHighlight(user.highlight_color)" ng-src="{{::user.avatar}}">
+          </a>
+        </div>
+      </td>
+      <td>
+        <a class="user-username" ng-style="IgnoreUsersCtrl.usernameHighlight(user.highlight_color)" ui-sref="profile.posts({ username: user.username })" ng-bind-html="user.username"></a>
+      </td>
+      <td class="hide-mobile" ng-bind="user.role || 'User'"></td>
+      <td ng-bind="user.ignored_since | humanDate"></td>
+      <td ng-if="user.ignored">
+        <a ng-click="IgnoreUsersCtrl.unignore(user)">
+          <i class="fa fa-user"></i>&nbsp;&nbsp;
+          Stop Ignoring User
+        </a>
+      </td>
+      <td ng-if="!user.ignored">
+        <a ng-click="IgnoreUsersCtrl.ignore(user)">
+          <i class="fa fa-user-times"></i>&nbsp;&nbsp;
+          Ignore User
+        </a>
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 <div class="ignored-section">
   <div class="pagination-slide">

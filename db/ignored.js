@@ -15,6 +15,7 @@ module.exports = function(userId, opts) {
   var q = `
   SELECT
     ui.ignored_user_id as id,
+    ui.created_at as ignored_since,
     u.username,
     up.avatar,
     up.fields,
@@ -36,7 +37,7 @@ module.exports = function(userId, opts) {
   FROM users.ignored ui
   LEFT JOIN users u ON ui.ignored_user_id = u.id
   LEFT JOIN users.profiles up ON ui.ignored_user_id = up.user_id
-  WHERE ui.user_id = $1
+  WHERE ui.user_id = $1 ORDER BY ignored_since DESC
   LIMIT $2 OFFSET $3`;
   return db.sqlQuery(q, [userId, opts.limit, opts.offset])
   .then(helper.slugify);
